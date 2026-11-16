@@ -221,9 +221,9 @@
                             <label for="booking-time" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
                                 Masa Penggunaan (Tulis Sendiri) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="text" id="booking-time" required value="" placeholder=""
+                            <input type="text" id="booking-time" required value="" placeholder="Contoh: 8:30 - 9:30 pagi"
                                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition bg-white">
-                            <p class="text-[11px] text-slate-400 mt-1">Sila taip sendiri waktu mula & tamat penggunaan makmal.</p>
+                            <p class="text-[11px] text-slate-400 mt-1">Contoh format: <strong>8:00 - 9:00</strong>, <strong>10:30 - 11:30 pagi</strong>, atau <strong>2:00 - 3:00 petang</strong>.</p>
                         </div>
 
                         <div>
@@ -849,6 +849,147 @@
             }[tag]));
         }
 
+        // =========================================================================
+        // FUNGSI PENGESAN PERTEMBUNGAN MASA PADA TARIKH YANG SAMA
+        // =========================================================================
+        function parseTimeRange(timeStr) {
+            if (!timeStr) return null;
+            const s = timeStr.toLowerCase().replace(/\./g, ':');
+            const matches = [...s.matchAll(/(\d{1,2})(?::(\d{2}))?\s*(am|pm|pagi|pg|tgh|tengahari|ptg|petang|mlm|malam)?/g)];
+            if (matches.length < 2) return null;
+
+            const toMinutes = (match) => {
+                let h = parseInt(match[1], 10);
+                let m = match[2] ? parseInt(match[2], 10) : 0;
+                const period = match[3] || '';
+
+                if (h > 24 || m > 59) return null;
+
+                if (period === 'pm' || period === 'ptg' || period === 'petang' || period === 'mlm' || period === 'malam') {
+                    if (h < 12) h += 12;
+                } else if (period === 'am' || period === 'pagi' || period === 'pg') {
+                    if (h === 12) h = 0;
+                } else if (period === 'tgh' || period === 'tengahari') {
+                    if (h < 11) h += 12;
+                } else {
+                    // Waktu persekolahan automatik (1:00 - 6:59 tanpa label dianggap petang)
+                    if (h >= 1 && h <= 6) h += 12;
+                }
+                return h * 60 + m;
+            };
+
+            const start = toMinutes(matches[0]);
+            const end = toMinutes(matches[1]);
+            if (start === null || end === null || end <= start) return null;
+
+            return { start, end };
+        }
+
+        function findTimeConflict(dateStr, newTimeStr) {
+            const sameDayBookings = bookings.filter(b => b.date === dateStr);
+            if (sameDayBookings.length === 0) return null;
+
+            const newRange = parseTimeRange(newTimeStr);
+            const cleanNew = newTimeStr.toLowerCase().replace(/\s+/g, '');
+
+            for (const existing of sameDayBookings) {
+                const existingRange = parseTimeRange(existing.time);
+                if (newRange && existingRange) {
+                    // Bertembung jika (MulaBaru < TamatLama) DAN (TamatBaru > MulaLama)
+                    if (newRange.start < existingRange.end && newRange.end > existingRange.start) {
+                        return existing;
+                    }
+                } else {
+                    // Sandaran semakan teks tepat jika format masa tidak berjulat
+                    const cleanExisting = existing.time.toLowerCase().replace(/\s+/g, '');
+                    if (cleanNew === cleanExisting) {
+                        return existing;
+                    }
+                }
+            }
+            return null;
+        }
+
+        async function handleBookingSubmit(event) {
+            event.preventDefault();
+
+            const dateVal = document.getElementById('booking-date').value;
+            const teacherVal = document.getElementById('teacher-name').value.trim();
+            const subjectVal = document.getElementById('subject-name').value.trim();
+            const timeVal = document.getElementById('booking-time').value.trim();
+            const classNoteVal = document.getElementById('class-note').value.trim();
+
+            if (!dateVal) {
+                showToast("Sila pilih tarikh pada kalendar terlebih dahulu.", "error");
+                return;
+            }
+
+            if (!teacherVal || !subjectVal || !timeVal) {
+                showToast("Sila lengkapkan Nama Guru, Mata Pelajaran, dan Masa.", "error");
+                return;
+            }
+
+            // Semak format julat masa supaya sah (contoh: 8:00 - 9:00)
+            const parsedRange = parseTimeRange(timeVal);
+            if (!parsedRange) {
+                showToast("Format masa tidak sah. Sila masukkan waktu mula dan tamat (contoh: 8:30 - 9:30 pagi).", "error");
+                return;
+            }
+
+            // Semak jika tarikh & masa bertembung dengan tempahan sedia ada
+            const conflict = findTimeConflict(dateVal, timeVal);
+            if (conflict) {
+                showToast(`RALAT TEMPAHAN: Masa bertembung dengan tempahan ${conflict.teacher} (${conflict.time}) pada tarikh ini!`, "error");
+                return;
+            }
+
+            const newRecord = {
+                id: 'rec-' + Date.now(),
+                date: dateVal,
+                teacher: teacherVal,
+                subject: subjectVal,
+                time: timeVal,
+                classNote: classNoteVal
+            };
+
+            const submitBtn = document.getElementById('btn-submit-booking');
+            const originalBtnHTML = submitBtn.innerHTML;
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Menyimpan ke Google Sheets...</span>`;
+            lucide.createIcons();
+
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({
+                        action: "add",
+                        booking: newRecord
+                    })
+                });
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    bookings.unshift(newRecord);
+                    resetBookingForm();
+                    updateAllViews();
+                    showToast("Tempahan berjaya disimpan ke Google Sheets!", "success");
+                } else {
+                    showToast(result.message || "Gagal menyimpan tempahan.", "error");
+                    if (result.conflict) {
+                        fetchBookingsFromSheet(false);
+                    }
+                }
+            } catch (error) {
+                console.error("Ralat menghantar tempahan:", error);
+                showToast("Ralat rangkaian semasa menyimpan ke Google Sheets.", "error");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHTML;
+                lucide.createIcons();
+            }
+        }
         window.onload = function() {
             selectDate(selectedDateStr);
             updateAllViews();
