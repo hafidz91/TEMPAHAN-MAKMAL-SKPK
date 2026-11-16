@@ -346,7 +346,7 @@
     <!-- SKRIP LOGIK APLIKASI -->
     <script>
         // =========================================================================
-        // PAUTAN WEB APP GOOGLE SHEETS TERBAHARU (DENGAN NOTIFIKASI 2 EMEL)
+        // PAUTAN WEB APP GOOGLE SHEETS TERBAHARU (DENGAN NOTIFIKASI TELEGRAM & EMEL)
         // =========================================================================
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8PaRiI2Y6EEfbC62Ji1k520JZ0faWrQInA8B1I96tNtPgRNPNR0aSYn-HZmdcsyBg/exec";
 
@@ -737,7 +737,7 @@
             const errorMsg = document.getElementById('delete-password-error');
             const deleteBtn = document.getElementById('btn-confirm-delete');
 
-            if (passInput.value !== 'abcd@1234') {
+            if (passInput.value !== 'abcd1234') {
                 errorMsg.classList.remove('hidden');
                 passInput.value = '';
                 passInput.focus();
