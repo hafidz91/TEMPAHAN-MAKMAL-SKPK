@@ -111,7 +111,7 @@
                     <i data-lucide="users" class="w-6 h-6"></i>
                 </div>
                 <div>
-                    <p class="text-xs font-medium text-slate-500">Tarikh Dipilih</p>
+                    <p class="text-xs font-medium text-slate-500">Tarikh Dipilih Pada Kalendar</p>
                     <p id="stat-selected-date" class="text-base font-bold text-slate-800 truncate">-</p>
                 </div>
             </div>
@@ -175,8 +175,8 @@
                 </div>
             </div>
 
-            <!-- SEKSYEN KANAN: BORANG TEMPAHAN & SENARAI PADA TARIKH DIPILIH -->
-            <div class="lg:col-span-5 xl:col-span-4 space-y-6">
+            <!-- SEKSYEN KANAN: BORANG TEMPAHAN & 3 TEMPLATE JADUAL -->
+            <div class="lg:col-span-5 xl:col-span-4 space-y-5">
                 
                 <!-- Kad Borang Tempahan Baru -->
                 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
@@ -241,13 +241,53 @@
                     </form>
                 </div>
 
-                <!-- Senarai Tempahan Pada Tarikh Dipilih -->
-                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                    <div class="px-5 py-3.5 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
-                        <h3 class="font-bold text-sm text-slate-800">Jadual Pada Tarikh Ini</h3>
-                        <span id="day-booking-count" class="text-xs font-bold bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full">0 Rekod</span>
+                <!-- TEMPLATE 1: TEMPAHAN UNTUK HARI INI -->
+                <div class="bg-white rounded-2xl border border-emerald-200 shadow-sm overflow-hidden">
+                    <div class="px-5 py-3.5 border-b border-emerald-100 bg-emerald-50/70 flex items-center justify-between gap-2">
+                        <div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                <h3 class="font-bold text-sm text-emerald-950">Tempahan Untuk Hari Ini</h3>
+                            </div>
+                            <p id="today-schedule-subtitle" class="text-[11px] font-medium text-emerald-700 mt-0.5">-</p>
+                        </div>
+                        <span id="today-booking-count" class="text-xs font-bold bg-emerald-600 text-white px-2.5 py-0.5 rounded-full shrink-0">0 Rekod</span>
                     </div>
-                    <div id="day-bookings-list" class="p-4 space-y-3 max-h-80 overflow-y-auto">
+                    <div id="today-bookings-list" class="p-4 space-y-3 max-h-64 overflow-y-auto">
+                        <!-- Dijana oleh JavaScript -->
+                    </div>
+                </div>
+
+                <!-- TEMPLATE 2: TEMPAHAN PENGGUNAAN ESOK -->
+                <div class="bg-white rounded-2xl border border-amber-200 shadow-sm overflow-hidden">
+                    <div class="px-5 py-3.5 border-b border-amber-100 bg-amber-50/70 flex items-center justify-between gap-2">
+                        <div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                                <h3 class="font-bold text-sm text-amber-950">Tempahan Penggunaan Esok</h3>
+                            </div>
+                            <p id="tomorrow-schedule-subtitle" class="text-[11px] font-medium text-amber-700 mt-0.5">-</p>
+                        </div>
+                        <span id="tomorrow-booking-count" class="text-xs font-bold bg-amber-600 text-white px-2.5 py-0.5 rounded-full shrink-0">0 Rekod</span>
+                    </div>
+                    <div id="tomorrow-bookings-list" class="p-4 space-y-3 max-h-64 overflow-y-auto">
+                        <!-- Dijana oleh JavaScript -->
+                    </div>
+                </div>
+
+                <!-- TEMPLATE 3: TEMPAHAN YANG TELAH DIBUAT (AKTIF & AKAN DATANG) -->
+                <div class="bg-white rounded-2xl border border-blue-200 shadow-sm overflow-hidden">
+                    <div class="px-5 py-3.5 border-b border-blue-100 bg-blue-50/70 flex items-center justify-between gap-2">
+                        <div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                                <h3 class="font-bold text-sm text-blue-950">Tempahan Yang Telah Dibuat</h3>
+                            </div>
+                            <p class="text-[11px] font-medium text-blue-700 mt-0.5">Tempahan hari ini & akan datang sahaja</p>
+                        </div>
+                        <span id="day-booking-count" class="text-xs font-bold bg-blue-600 text-white px-2.5 py-0.5 rounded-full shrink-0">0 Rekod</span>
+                    </div>
+                    <div id="day-bookings-list" class="p-4 space-y-3 max-h-72 overflow-y-auto">
                         <!-- Dijana oleh JavaScript -->
                     </div>
                 </div>
@@ -261,7 +301,7 @@
                 <div class="p-5 sm:p-6 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/50">
                     <div>
                         <h2 class="text-xl font-bold text-slate-800">Rekod Penggunaan & Tempahan Makmal</h2>
-                        <p class="text-sm text-slate-500 mt-0.5">Pantau semua data penggunaan yang telah direkodkan oleh guru.</p>
+                        <p class="text-sm text-slate-500 mt-0.5">Pantau semua data penggunaan yang telah direkodkan oleh guru (termasuk rekod lepas).</p>
                     </div>
                     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                         <div class="relative">
@@ -280,7 +320,7 @@
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-slate-100/80 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-600">
-                                <th class="py-3.5 px-4">Tarikh</th>
+                                <th class="py-3.5 px-4">Tarikh Guna</th>
                                 <th class="py-3.5 px-4">Masa Penggunaan</th>
                                 <th class="py-3.5 px-4">Nama Guru</th>
                                 <th class="py-3.5 px-4">Mata Pelajaran</th>
@@ -357,9 +397,13 @@
         const DAY_NAMES = ["Ahad", "Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu"];
 
         const TODAY = new Date();
+        const TODAY_STR = formatDateISO(TODAY);
+        const TOMORROW = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate() + 1);
+        const TOMORROW_STR = formatDateISO(TOMORROW);
+
         let currentMonth = TODAY.getMonth();
         let currentYear = TODAY.getFullYear();
-        let selectedDateStr = formatDateISO(TODAY);
+        let selectedDateStr = TODAY_STR;
         let deleteTargetId = null;
         let bookings = [];
 
@@ -377,6 +421,23 @@
             const dateObj = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
             const dayName = DAY_NAMES[dateObj.getDay()];
             return `${dayName}, ${Number(parts[2])} ${MONTH_NAMES[Number(parts[1]) - 1]} ${parts[0]}`;
+        }
+
+        function formatBookedTimestamp(booking) {
+            if (booking.createdAt) return booking.createdAt;
+            if (booking.id && booking.id.startsWith('rec-')) {
+                const ts = Number(booking.id.replace('rec-', ''));
+                if (!isNaN(ts)) {
+                    const d = new Date(ts);
+                    const dd = String(d.getDate()).padStart(2, '0');
+                    const mm = String(d.getMonth() + 1).padStart(2, '0');
+                    const yyyy = d.getFullYear();
+                    const hh = String(d.getHours()).padStart(2, '0');
+                    const min = String(d.getMinutes()).padStart(2, '0');
+                    return `${dd}/${mm}/${yyyy} (${hh}:${min})`;
+                }
+            }
+            return '';
         }
 
         function switchTab(tabName) {
@@ -414,7 +475,7 @@
         function goToToday() {
             currentMonth = TODAY.getMonth();
             currentYear = TODAY.getFullYear();
-            selectDate(formatDateISO(TODAY));
+            selectDate(TODAY_STR);
             renderCalendar();
         }
 
@@ -431,7 +492,7 @@
             document.getElementById('stat-selected-date').textContent = prettyDate;
 
             renderCalendar();
-            renderDayBookings();
+            renderAllCreatedBookings();
             lucide.createIcons();
         }
 
@@ -442,7 +503,6 @@
 
             const firstDay = new Date(currentYear, currentMonth, 1).getDay();
             const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-            const todayStr = formatDateISO(TODAY);
 
             let html = '';
 
@@ -454,7 +514,7 @@
                 const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const dayBookings = bookings.filter(b => b.date === dateStr);
                 const isSelected = dateStr === selectedDateStr;
-                const isToday = dateStr === todayStr;
+                const isToday = dateStr === TODAY_STR;
 
                 let btnClass = "h-14 sm:h-20 rounded-xl border p-1.5 sm:p-2 flex flex-col justify-between text-left transition-all relative cursor-pointer ";
                 if (isSelected) {
@@ -495,7 +555,9 @@
 
         function updateAllViews() {
             renderCalendar();
-            renderDayBookings();
+            renderTodayBookings();
+            renderTomorrowBookings();
+            renderAllCreatedBookings();
             renderRecordsTable();
             updateStats();
         }
@@ -547,27 +609,19 @@
             }
         }
 
-        function renderDayBookings() {
-            const listContainer = document.getElementById('day-bookings-list');
-            const countBadge = document.getElementById('day-booking-count');
-            const dayBookings = bookings.filter(b => b.date === selectedDateStr);
+        function createBookingCardHTML(b, accent = 'blue', showBookingDate = false) {
+            const badgeStyles = {
+                emerald: 'text-emerald-800 bg-emerald-100',
+                amber: 'text-amber-900 bg-amber-100',
+                blue: 'text-blue-800 bg-blue-100'
+            };
+            const badgeStyle = badgeStyles[accent] || badgeStyles.blue;
+            const bookedAt = formatBookedTimestamp(b);
 
-            countBadge.textContent = `${dayBookings.length} Rekod`;
-
-            if (dayBookings.length === 0) {
-                listContainer.innerHTML = `
-                    <div class="text-center py-6 px-3">
-                        <p class="text-xs font-medium text-slate-400">Tiada tempahan direkodkan pada tarikh ini.</p>
-                        <p class="text-[11px] text-slate-400 mt-1">Makmal komputer tersedia untuk tempahan.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            listContainer.innerHTML = dayBookings.map(b => `
+            return `
                 <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-white hover:shadow-sm transition relative group">
                     <div class="flex items-start justify-between gap-2">
-                        <span class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 bg-blue-100 px-2.5 py-1 rounded-lg">
+                        <span class="inline-flex items-center gap-1.5 text-xs font-bold ${badgeStyle} px-2.5 py-1 rounded-lg">
                             <i data-lucide="clock" class="w-3.5 h-3.5"></i>
                             ${escapeHTML(b.time)}
                         </span>
@@ -575,7 +629,13 @@
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                     </div>
-                    <h4 class="font-bold text-slate-800 text-sm mt-2.5 flex items-center gap-1.5">
+                    ${showBookingDate ? `
+                        <p class="text-xs font-bold text-blue-700 mt-2 flex items-center gap-1.5">
+                            <i data-lucide="calendar" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i>
+                            <span>Tarikh Guna: ${escapeHTML(formatDateDisplay(b.date))}</span>
+                        </p>
+                    ` : ''}
+                    <h4 class="font-bold text-slate-800 text-sm mt-2 flex items-center gap-1.5">
                         <i data-lucide="user" class="w-4 h-4 text-slate-400 shrink-0"></i>
                         <span>${escapeHTML(b.teacher)}</span>
                     </h4>
@@ -588,73 +648,93 @@
                             ${escapeHTML(b.classNote)}
                         </p>
                     ` : ''}
+                    ${bookedAt ? `
+                        <p class="text-[10px] text-slate-400 mt-2 pt-1.5 border-t border-slate-200/60 flex items-center gap-1">
+                            <i data-lucide="history" class="w-3 h-3"></i>
+                            <span>Ditempah pada: ${escapeHTML(bookedAt)}</span>
+                        </p>
+                    ` : ''}
                 </div>
-            `).join('');
+            `;
+        }
+
+        // TEMPLATE 1: TEMPAHAN KHUSUS UNTUK HARI INI
+        function renderTodayBookings() {
+            const listContainer = document.getElementById('today-bookings-list');
+            const countBadge = document.getElementById('today-booking-count');
+            const subtitle = document.getElementById('today-schedule-subtitle');
+            const todayBookings = bookings.filter(b => b.date === TODAY_STR);
+
+            subtitle.textContent = formatDateDisplay(TODAY_STR);
+            countBadge.textContent = `${todayBookings.length} Rekod`;
+
+            if (todayBookings.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-5 px-3">
+                        <p class="text-xs font-medium text-slate-400">Tiada penggunaan makmal dijadualkan untuk hari ini.</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Makmal komputer kosong sepanjang hari ini.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listContainer.innerHTML = todayBookings.map(b => createBookingCardHTML(b, 'emerald', false)).join('');
             lucide.createIcons();
         }
 
-        async function handleBookingSubmit(event) {
-            event.preventDefault();
+        // TEMPLATE 2: TEMPAHAN PENGGUNAAN ESOK
+        function renderTomorrowBookings() {
+            const listContainer = document.getElementById('tomorrow-bookings-list');
+            const countBadge = document.getElementById('tomorrow-booking-count');
+            const subtitle = document.getElementById('tomorrow-schedule-subtitle');
+            const tomorrowBookings = bookings.filter(b => b.date === TOMORROW_STR);
 
-            const dateVal = document.getElementById('booking-date').value;
-            const teacherVal = document.getElementById('teacher-name').value.trim();
-            const subjectVal = document.getElementById('subject-name').value.trim();
-            const timeVal = document.getElementById('booking-time').value.trim();
-            const classNoteVal = document.getElementById('class-note').value.trim();
+            subtitle.textContent = formatDateDisplay(TOMORROW_STR);
+            countBadge.textContent = `${tomorrowBookings.length} Rekod`;
 
-            if (!dateVal) {
-                showToast("Sila pilih tarikh pada kalendar terlebih dahulu.", "error");
+            if (tomorrowBookings.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-5 px-3">
+                        <p class="text-xs font-medium text-slate-400">Tiada penggunaan makmal dijadualkan untuk esok.</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Klik tarikh esok pada kalendar untuk menempah.</p>
+                    </div>
+                `;
                 return;
             }
 
-            if (!teacherVal || !subjectVal || !timeVal) {
-                showToast("Sila lengkapkan Nama Guru, Mata Pelajaran, dan Masa.", "error");
-                return;
-            }
-
-            const newRecord = {
-                id: 'rec-' + Date.now(),
-                date: dateVal,
-                teacher: teacherVal,
-                subject: subjectVal,
-                time: timeVal,
-                classNote: classNoteVal
-            };
-
-            const submitBtn = document.getElementById('btn-submit-booking');
-            const originalBtnHTML = submitBtn.innerHTML;
-
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Menyimpan ke Google Sheets...</span>`;
+            listContainer.innerHTML = tomorrowBookings.map(b => createBookingCardHTML(b, 'amber', false)).join('');
             lucide.createIcons();
+        }
 
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "text/plain;charset=utf-8" },
-                    body: JSON.stringify({
-                        action: "add",
-                        booking: newRecord
-                    })
+        // TEMPLATE 3: TEMPAHAN YANG TELAH DIBUAT (HARI INI & AKAN DATANG SAHAJA)
+        function renderAllCreatedBookings() {
+            const listContainer = document.getElementById('day-bookings-list');
+            const countBadge = document.getElementById('day-booking-count');
+
+            // Tapis supaya hanya tarikh hari ini dan akan datang dipaparkan di sini
+            // Rekod yang sudah lepas kekal disimpan di tab 'Semua Rekod' dan Google Sheets
+            const activeUpcoming = bookings
+                .filter(b => b.date && b.date >= TODAY_STR)
+                .sort((a, b) => {
+                    const idA = a.id || '';
+                    const idB = b.id || '';
+                    return idB.localeCompare(idA);
                 });
-                const result = await response.json();
 
-                if (result.status === "success") {
-                    bookings.unshift(newRecord);
-                    resetBookingForm();
-                    updateAllViews();
-                    showToast("Tempahan berjaya disimpan ke Google Sheets!", "success");
-                } else {
-                    showToast("Gagal menyimpan: " + (result.message || "Ralat pelayan"), "error");
-                }
-            } catch (error) {
-                console.error("Ralat menghantar tempahan:", error);
-                showToast("Ralat rangkaian semasa menyimpan ke Google Sheets.", "error");
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnHTML;
-                lucide.createIcons();
+            countBadge.textContent = `${activeUpcoming.length} Rekod`;
+
+            if (activeUpcoming.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-5 px-3">
+                        <p class="text-xs font-medium text-slate-400">Tiada tempahan aktif atau akan datang buat masa ini.</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Rekod tempahan lepas boleh disemak di tab <strong>Semua Rekod</strong>.</p>
+                    </div>
+                `;
+                return;
             }
+
+            listContainer.innerHTML = activeUpcoming.map(b => createBookingCardHTML(b, 'blue', true)).join('');
+            lucide.createIcons();
         }
 
         function resetBookingForm() {
@@ -686,35 +766,43 @@
             }
 
             emptyState.classList.add('hidden');
-            tbody.innerHTML = filtered.map(b => `
-                <tr class="hover:bg-blue-50/40 transition">
-                    <td class="py-3.5 px-4 font-semibold text-slate-800 whitespace-nowrap">
-                        ${formatDateDisplay(b.date)}
-                    </td>
-                    <td class="py-3.5 px-4 whitespace-nowrap">
-                        <span class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 bg-blue-100/80 px-2.5 py-1 rounded-lg">
-                            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                            ${escapeHTML(b.time)}
-                        </span>
-                    </td>
-                    <td class="py-3.5 px-4 font-medium text-slate-800">
-                        ${escapeHTML(b.teacher)}
-                    </td>
-                    <td class="py-3.5 px-4">
-                        <span class="inline-block text-xs font-semibold text-emerald-800 bg-emerald-100/80 px-2.5 py-1 rounded-lg">
-                            ${escapeHTML(b.subject)}
-                        </span>
-                    </td>
-                    <td class="py-3.5 px-4 text-slate-500 text-xs">
-                        ${b.classNote ? escapeHTML(b.classNote) : '<span class="text-slate-300">-</span>'}
-                    </td>
-                    <td class="py-3.5 px-4 text-center">
-                        <button onclick="promptDelete('${b.id}')" class="text-rose-500 hover:text-rose-700 hover:bg-rose-50 p-2 rounded-lg transition" title="Padam Rekod">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = filtered.map(b => {
+                const bookedAt = formatBookedTimestamp(b);
+                const isPast = b.date < TODAY_STR;
+                return `
+                    <tr class="hover:bg-blue-50/40 transition ${isPast ? 'bg-slate-50/40' : ''}">
+                        <td class="py-3.5 px-4 font-semibold text-slate-800 whitespace-nowrap">
+                            <div class="flex items-center gap-2">
+                                <span>${formatDateDisplay(b.date)}</span>
+                                ${isPast ? '<span class="text-[10px] font-semibold bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded">Selesai</span>' : ''}
+                            </div>
+                            ${bookedAt ? `<div class="text-[11px] font-normal text-slate-400 mt-0.5">Direkod: ${escapeHTML(bookedAt)}</div>` : ''}
+                        </td>
+                        <td class="py-3.5 px-4 whitespace-nowrap">
+                            <span class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 bg-blue-100/80 px-2.5 py-1 rounded-lg">
+                                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                                ${escapeHTML(b.time)}
+                            </span>
+                        </td>
+                        <td class="py-3.5 px-4 font-medium text-slate-800">
+                            ${escapeHTML(b.teacher)}
+                        </td>
+                        <td class="py-3.5 px-4">
+                            <span class="inline-block text-xs font-semibold text-emerald-800 bg-emerald-100/80 px-2.5 py-1 rounded-lg">
+                                ${escapeHTML(b.subject)}
+                            </span>
+                        </td>
+                        <td class="py-3.5 px-4 text-slate-500 text-xs">
+                            ${b.classNote ? escapeHTML(b.classNote) : '<span class="text-slate-300">-</span>'}
+                        </td>
+                        <td class="py-3.5 px-4 text-center">
+                            <button onclick="promptDelete('${b.id}')" class="text-rose-500 hover:text-rose-700 hover:bg-rose-50 p-2 rounded-lg transition" title="Padam Rekod">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
             lucide.createIcons();
         }
 
@@ -789,13 +877,14 @@
                 return;
             }
 
-            const headers = ["Tarikh", "Masa Penggunaan", "Nama Guru", "Mata Pelajaran", "Kelas / Catatan"];
+            const headers = ["Tarikh Guna", "Masa Penggunaan", "Nama Guru", "Mata Pelajaran", "Kelas / Catatan", "Tarikh Ditempah"];
             const rows = bookings.map(b => [
                 `"${b.date}"`,
                 `"${b.time.replace(/"/g, '""')}"`,
                 `"${b.teacher.replace(/"/g, '""')}"`,
                 `"${b.subject.replace(/"/g, '""')}"`,
-                `"${(b.classNote || '').replace(/"/g, '""')}"`
+                `"${(b.classNote || '').replace(/"/g, '""')}"`,
+                `"${formatBookedTimestamp(b)}"`
             ]);
 
             const csvContent = "data:text/csv;charset=utf-8," 
@@ -804,7 +893,7 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `Rekod_Makmal_Komputer_SK_Pangkal_Kalong_${formatDateISO(TODAY)}.csv`);
+            link.setAttribute("download", `Rekod_Makmal_Komputer_SK_Pangkal_Kalong_${TODAY_STR}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -872,7 +961,6 @@
                 } else if (period === 'tgh' || period === 'tengahari') {
                     if (h < 11) h += 12;
                 } else {
-                    // Waktu persekolahan automatik (1:00 - 6:59 tanpa label dianggap petang)
                     if (h >= 1 && h <= 6) h += 12;
                 }
                 return h * 60 + m;
@@ -895,12 +983,10 @@
             for (const existing of sameDayBookings) {
                 const existingRange = parseTimeRange(existing.time);
                 if (newRange && existingRange) {
-                    // Bertembung jika (MulaBaru < TamatLama) DAN (TamatBaru > MulaLama)
                     if (newRange.start < existingRange.end && newRange.end > existingRange.start) {
                         return existing;
                     }
                 } else {
-                    // Sandaran semakan teks tepat jika format masa tidak berjulat
                     const cleanExisting = existing.time.toLowerCase().replace(/\s+/g, '');
                     if (cleanNew === cleanExisting) {
                         return existing;
@@ -929,19 +1015,20 @@
                 return;
             }
 
-            // Semak format julat masa supaya sah (contoh: 8:00 - 9:00)
             const parsedRange = parseTimeRange(timeVal);
             if (!parsedRange) {
                 showToast("Format masa tidak sah. Sila masukkan waktu mula dan tamat (contoh: 8:30 - 9:30 pagi).", "error");
                 return;
             }
 
-            // Semak jika tarikh & masa bertembung dengan tempahan sedia ada
             const conflict = findTimeConflict(dateVal, timeVal);
             if (conflict) {
                 showToast(`RALAT TEMPAHAN: Masa bertembung dengan tempahan ${conflict.teacher} (${conflict.time}) pada tarikh ini!`, "error");
                 return;
             }
+
+            const now = new Date();
+            const createdStr = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()} (${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')})`;
 
             const newRecord = {
                 id: 'rec-' + Date.now(),
@@ -949,7 +1036,8 @@
                 teacher: teacherVal,
                 subject: subjectVal,
                 time: timeVal,
-                classNote: classNoteVal
+                classNote: classNoteVal,
+                createdAt: createdStr
             };
 
             const submitBtn = document.getElementById('btn-submit-booking');
@@ -990,6 +1078,7 @@
                 lucide.createIcons();
             }
         }
+
         window.onload = function() {
             selectDate(selectedDateStr);
             updateAllViews();
