@@ -44,10 +44,16 @@
     <header class="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white shadow-lg sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <!-- Identiti Sekolah -->
+                <!-- Identiti Sekolah + Logo Rasmi -->
                 <div class="flex items-center gap-3.5">
-                    <div class="bg-amber-400 text-blue-950 p-2.5 rounded-xl shadow-md shrink-0">
-                        <i data-lucide="monitor" class="w-7 h-7 stroke-[2.2]"></i>
+                    <div class="bg-white p-1.5 rounded-2xl shadow-md shrink-0 w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center overflow-hidden border-2 border-amber-400">
+                        <img src="LOGO%20SKPK.png" 
+                             onerror="if(!this.dataset.step){this.dataset.step='1';this.src='LOGO%20SKPK.jpg';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='LOGO%20SKPK.jpeg';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='LOGO%20SKPK';}else{this.style.display='none';document.getElementById('fallback-logo-icon').classList.remove('hidden');}"
+                             alt="Logo SK Pangkal Kalong" 
+                             class="w-full h-full object-contain">
+                        <div id="fallback-logo-icon" class="hidden bg-amber-400 text-blue-950 w-full h-full rounded-xl flex items-center justify-center">
+                            <i data-lucide="monitor" class="w-7 h-7 stroke-[2.2]"></i>
+                        </div>
                     </div>
                     <div>
                         <span class="text-xs font-semibold uppercase tracking-wider text-amber-300 block">Sistem Pengurusan & Rekod ICT</span>
@@ -711,8 +717,6 @@
             const listContainer = document.getElementById('day-bookings-list');
             const countBadge = document.getElementById('day-booking-count');
 
-            // Tapis supaya hanya tarikh hari ini dan akan datang dipaparkan di sini
-            // Rekod yang sudah lepas kekal disimpan di tab 'Semua Rekod' dan Google Sheets
             const activeUpcoming = bookings
                 .filter(b => b.date && b.date >= TODAY_STR)
                 .sort((a, b) => {
